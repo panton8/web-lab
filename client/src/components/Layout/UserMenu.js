@@ -8,7 +8,7 @@ function UserMenu() {
         <div className="list-group">
             <h4>Dashboard</h4>
             <NavLink to="/dashboard/user/profile" className="list-group-item list-group-item-action">Profile</NavLink>
-            <NavLink to="/dashboard/user/tickets" className="list-group-item list-group-item-action">Tickets</NavLink>
+            <NavLink to="/dashboard/user/orders" className="list-group-item list-group-item-action">Tickets</NavLink>
         </div>
     </div>
     </>

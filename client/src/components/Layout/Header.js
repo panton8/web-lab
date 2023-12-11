@@ -3,9 +3,15 @@ import { NavLink, Link } from "react-router-dom";
 import { useAuth } from "../../context/auth";
 import toast from "react-hot-toast";
 import { IoTicket } from "react-icons/io5";
+import SearchInput from './../Form/SearchInput';
+import useGenre from "../../hooks/useGenre";
+import { useCart } from "../../context/cart";
+import { Badge } from "antd";
 
 const Header = () => {
   const [auth, setAuth] = useAuth();
+  const [cart] = useCart();
+  const genres = useGenre();
   const handleLogout = () => {
     setAuth({
       ...auth,
@@ -35,15 +41,37 @@ const Header = () => {
             <IoTicket /> Cinema 
             </Link>
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+              <SearchInput/>
               <li className="nav-item">
                 <NavLink to="/" className="nav-link ">
                   Home
                 </NavLink>
               </li>
-              <li className="nav-item">
-                <NavLink to="/category" className="nav-link ">
-                  Category
-                </NavLink>
+              <li className="nav-item dropdown">
+                <Link
+                  className="nav-link dropdown-toggle"
+                  to={"/genres"}
+                  data-bs-toggle="dropdown"
+                >
+                  Genres
+                </Link>
+                <ul className="dropdown-menu">
+                  <li>
+                    <Link className="dropdown-item" to={"/genres"}>
+                      All Genres
+                    </Link>
+                  </li>
+                  {genres?.map((g) => (
+                    <li>
+                      <Link
+                        className="dropdown-item"
+                        to={`/genre/${g.slug}`}
+                      >
+                        {g.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               </li>
               {!auth?.user ? (
                 <>
@@ -95,9 +123,11 @@ const Header = () => {
                 </>
               )}
               <li className="nav-item">
-                <NavLink to="/cart" className="nav-link">
-                  Cart (0)
-                </NavLink>
+                <Badge count={cart?.length} showZero>
+                  <NavLink to="/cart" className="nav-link">
+                    Cart
+                  </NavLink>
+                </Badge>
               </li>
             </ul>
           </div>

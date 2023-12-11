@@ -1,7 +1,20 @@
-
 import fs from "fs";
 import slugify from "slugify";
 import filmModel from "../models/filmModel.js";
+import genreModel from "../models/genreModel.js";
+import orderModel from "../models/orderModel.js";
+import dotenv from "dotenv";
+import braintree from "braintree";
+
+dotenv.config();
+
+//payment gateway
+var gateway = new braintree.BraintreeGateway({
+  environment: braintree.Environment.Sandbox,
+  merchantId: process.env.BRAINTREE_MERCHANT_ID,
+  publicKey: process.env.BRAINTREE_PUBLIC_KEY,
+  privateKey: process.env.BRAINTREE_PRIVATE_KEY,
+});
 
 export const addFilmController = async (req, res) => {
   try {
@@ -221,7 +234,7 @@ export const filmCountController = async (req, res) => {
 // film list base on page
 export const filmListController = async (req, res) => {
   try {
-    const perPage = 3;
+    const perPage = 6;
     const page = req.params.page !== undefined ? req.params.page : 1;
     const films = await filmModel
       .find({})
@@ -286,7 +299,7 @@ export const realtedFilmController = async (req, res) => {
     console.log(error);
     res.status(400).send({
       success: false,
-      message: "error while geting related product",
+      message: "error while geting related film",
       error,
     });
   }
@@ -299,15 +312,66 @@ export const filmGenreController = async (req, res) => {
     const films = await filmModel.find({ genre }).populate("genre");
     res.status(200).send({
       success: true,
-      category,
-      products,
+      genre,
+      films,
     });
   } catch (error) {
     console.log(error);
     res.status(400).send({
       success: false,
       error,
-      message: "Error While Getting films",
+      message: `Error While Getting films`,
     });
+  }
+};
+
+
+//payment gateway api
+//token
+export const braintreeTokenController = async (req, res) => {
+  try {
+    gateway.clientToken.generate({}, function (err, response) {
+      if (err) {
+        res.status(500).send(err);
+      } else {
+        res.send(response);
+      }
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+//payment
+export const brainTreePaymentController = async (req, res) => {
+  try {
+    const { nonce, cart } = req.body;
+    let total = 0;
+    cart.map((i) => {
+      total += i.ticketPrice;
+    });
+    let newTransaction = gateway.transaction.sale(
+      {
+        amount: total,
+        paymentMethodNonce: nonce,
+        options: {
+          submitForSettlement: true,
+        },
+      },
+      function (error, result) {
+        if (result) {
+          const order = new orderModel({
+            films: cart,
+            payment: result,
+            buyer: req.user._id,
+          }).save();
+          res.json({ ok: true });
+        } else {
+          res.status(500).send(error);
+        }
+      }
+    );
+  } catch (error) {
+    console.log(error);
   }
 };

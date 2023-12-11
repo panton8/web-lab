@@ -3,8 +3,14 @@ import Layout from "./../components/Layout/Layout.js";
 import axios from "axios";
 import { Checkbox, Radio } from "antd";
 import { Prices } from "../components/Prices";
+import { useNavigate } from 'react-router-dom';
+import { useCart } from "../context/cart";
+import toast from "react-hot-toast";
+import "../styles/Homepage.css";
 
 const HomePage = () => {
+  const navigate = useNavigate();
+  const [cart, setCart] = useCart();
   const [films, setFilms] = useState([]);
   const [genres, setGenres] = useState([]);
   const [checked, setChecked] = useState([]);
@@ -155,8 +161,18 @@ const HomePage = () => {
                       {f.description.substring(0, 30)}...
                     </p>
                     <p className="card-text">$ {f.ticketPrice}</p>
-                    <button className="btn btn-primary ms-1">More Details</button>
-                    <button className="btn btn-secondary ms-1">Add to Cart</button>
+                    <button className="btn btn-primary ms-1"
+                    onClick={() => navigate(`/film/${f.slug}`)}>
+                       More Details</button>
+                    <button className="btn btn-secondary ms-1"
+                                        onClick={() => {
+                                          setCart([...cart, f]);
+                                          localStorage.setItem(
+                                            "cart",
+                                            JSON.stringify([...cart,f])
+                                          );
+                                          toast.success("Item Added to cart");
+                                        }}>Add to Cart</button>
                   </div>
                 </div>
               </div>

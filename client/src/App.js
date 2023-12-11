@@ -18,15 +18,26 @@ import Tickets from './pages/user/Tickets';
 import Profile from './pages/user/Profile';
 import Films from "./pages/Admin/Films";
 import UpdateFilm from "./pages/Admin/UpdateFilm";
+import Search from './pages/Search';
+import FilmDetails from './pages/FilmDetails';
+import Genres from './pages/Genres';
+import GenreFilm from './pages/GenreFilm';
+import CartPage from './pages/CartPage';
+import AdminOrders from './pages/Admin/AdminOrders';
 
 function App() {
   return (
     <>
     <Routes>
       <Route path="/" element={<HomePage/>} />
+      <Route path="/film/:slug" element={<FilmDetails/>} />
+      <Route path="/genres" element={<Genres/>} />
+      <Route path="/genre/:slug" element={<GenreFilm/>} />
+      <Route path="/cart" element={<CartPage/>} />
+      <Route path="/search" element={<Search/>} />
       <Route path="/dashboard" element={<PrivateRoute/>}>
         <Route path="user" element={<Dashboard/>} />
-        <Route path="user/tickets" element={<Tickets/>} />
+        <Route path="user/orders" element={<Tickets/>} />
         <Route path="user/profile" element={<Profile/>} />
       </Route>
       <Route path="/dashboard" element={<AdminRoute/>}>
@@ -36,6 +47,7 @@ function App() {
         <Route path="admin/film/:slug" element={<UpdateFilm/>} />
         <Route path="admin/films" element={<Films />} />
         <Route path="admin/users" element={<Users/>} />
+        <Route path="admin/orders" element={<AdminOrders/>} />
       </Route>
       <Route path="/register" element={<Register/>} />
       <Route path="/forgot-password" element={<ForgotPasssword/>} />

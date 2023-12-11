@@ -11,7 +11,9 @@ import {
   filmListController,
   searchFilmController,
   realtedFilmController,
-  filmGenreController
+  filmGenreController,
+  brainTreePaymentController,
+  braintreeTokenController,
 } from "../controllers/filmController.js";
 import { isAdmin, requireSignIn } from "../middlewares/authMiddleware.js";
 import formidable from "express-formidable";
@@ -53,16 +55,24 @@ router.post("/film-filters", filmFiltersController);
 //product count
 router.get("/film-count", filmCountController);
 
-//product per page
+//film per page
 router.get("/film-list/:page", filmListController);
 
-//search product
+//search film
 router.get("/search/:keyword", searchFilmController);
 
-//similar product
+//similar film
 router.get("/related-film/:pid/:cid", realtedFilmController);
 
-//category wise product
+//genre wise film
 router.get("/film-genre/:slug", filmGenreController);
+
+//payments routes
+//token
+router.get("/braintree/token", braintreeTokenController);
+
+//payments
+router.post("/braintree/payment", requireSignIn, brainTreePaymentController);
+
 
 export default router;
