@@ -1,7 +1,23 @@
 import React from "react";
 import Layout from "./../components/Layout/Layout";
-
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 const About = () => {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('https://catfact.ninja/fact');
+        setData(response.data);
+      } catch (error) {
+        console.error('Error fetching data: ', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <Layout title={'About'}>
       <div className="row contactus ">
@@ -26,6 +42,10 @@ const About = () => {
           </p>
         </div>
       </div>
+      <div>
+    <h1>Example API</h1>
+    <h2>{data.fact}</h2>
+  </div>
     </Layout>
   );
 };

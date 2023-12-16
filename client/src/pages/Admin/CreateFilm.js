@@ -34,20 +34,20 @@ function CreateFilm() {
     getAllFilms();
   }, []);
 
-  //create product function
+  //create film function
   const handleCreate = async (e) => {
     e.preventDefault();
     try {
-      const productData = new FormData();
-      productData.append("name", name);
-      productData.append("description", description);
-      productData.append("ticketPrice", ticketPrice);
-      productData.append("ticketsAmount", ticketsAmount);
-      productData.append("photo", photo);
-      productData.append("genre", genre);
+      const filmData = new FormData();
+      filmData.append("name", name);
+      filmData.append("description", description);
+      filmData.append("ticketPrice", ticketPrice);
+      filmData.append("ticketsAmount", ticketsAmount);
+      filmData.append("photo", photo);
+      filmData.append("genre", genre);
       const { data } = axios.post(
         "/api/v1/film/add-film",
-        productData
+        filmData
       );
       if (data?.success) {
         toast.error(data?.message);

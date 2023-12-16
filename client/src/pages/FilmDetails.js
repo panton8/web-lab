@@ -47,8 +47,8 @@ const FilmDetails = () => {
             src={`/api/v1/film/film-photo/${film._id}`}
             className="card-img-top"
             alt={film.name}
-            height="300"
-            width={"350px"}
+            height="900"
+            width={"30px"}
           />
         </div>
         <div className="col-md-6 ">

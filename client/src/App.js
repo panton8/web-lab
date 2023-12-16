@@ -46,7 +46,6 @@ function App() {
         <Route path="admin/add-film" element={<CreateFilm/>} />
         <Route path="admin/film/:slug" element={<UpdateFilm/>} />
         <Route path="admin/films" element={<Films />} />
-        <Route path="admin/users" element={<Users/>} />
         <Route path="admin/orders" element={<AdminOrders/>} />
       </Route>
       <Route path="/register" element={<Register/>} />

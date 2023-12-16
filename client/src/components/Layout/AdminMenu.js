@@ -11,7 +11,6 @@ function AdminMenu() {
             <NavLink to="/dashboard/admin/add-film" className="list-group-item list-group-item-action">Add Film</NavLink>
             <NavLink to="/dashboard/admin/films" className="list-group-item list-group-item-action">Films</NavLink>
             <NavLink to="/dashboard/admin/orders" className="list-group-item list-group-item-action">Orders</NavLink>
-            <NavLink to="/dashboard/admin/users" className="list-group-item list-group-item-action">Users</NavLink>
         </div>
     </div>
     </>

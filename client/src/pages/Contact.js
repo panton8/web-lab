@@ -1,7 +1,23 @@
 import React from "react";
 import Layout from "./../components/Layout/Layout";
 import { BiMailSend, BiPhoneCall, BiSupport } from "react-icons/bi";
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 const Contact = () => {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://universities.hipolabs.com/search?country=Kazakhstan');
+        setData(response.data);
+      } catch (error) {
+        console.error('Error fetching data: ', error);
+      }
+    };
+
+    fetchData();
+  }, []);
   return (
     <Layout title={'Contact us'}>
       <div className="row contactus ">
@@ -34,6 +50,12 @@ const Contact = () => {
           </p>
         </div>
       </div>
+      <h1>Example API 2</h1>
+      <ul>
+        {data.map(item => (
+          <li key={item.id}>{item.name}</li>
+        ))}
+      </ul>
     </Layout>
   );
 };
